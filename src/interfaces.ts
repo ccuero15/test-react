@@ -9,3 +9,10 @@ export interface AuthContextType {
 export interface LayoutProps {
     children: React.ReactNode
 }
+
+export interface SignupFormData {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string; // Asegúrate de tener este campo también
+}

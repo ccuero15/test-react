@@ -1,5 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 //import MainLayout from './MainLayout';
 
 interface FormData {
@@ -9,14 +11,26 @@ interface FormData {
 
 const Login: React.FC = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-
+    const navigate = useNavigate(); // Hook para navegación
     const onSubmit = (data: FormData) => {
         // Lógica para manejar el inicio de sesión
         console.log(data);
     };
 
+    const goToSignup = () => {
+        navigate('/signup'); // Redirige a la página de registro
+    };
+
+    const auth = useAuth();
+    console.log(auth)
+
+    if (auth.isAuthtenticated) {
+        return <Navigate to='dashboard'/>
+    }
+
+
     return (
-      <div className="p-8 bg-white bg-opacity-90 rounded-lg shadow-lg text-center">
+        <div className="p-8 bg-white bg-opacity-90 rounded-lg shadow-lg text-center">
             <h2 className="text-2xl font-bold mb-4">Iniciar sesión</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 {/* Username Field */}
@@ -45,15 +59,18 @@ const Login: React.FC = () => {
                     Iniciar sesión
                 </button>
             </form>
-            <div className="flex items-center justify-center space-x-2 mt-4">
+            {/* <div className="flex items-center justify-center space-x-2 mt-4">
                 <button className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700">F</button>
                 <button className="p-2 rounded-full bg-red-600 text-white hover:bg-red-700">G</button>
                 <button className="p-2 rounded-full bg-black text-white hover:bg-gray-800">A</button>
                 <button className="p-2 rounded-full bg-green-600 text-white hover:bg-green-700">X</button>
                 <button className="p-2 rounded-full bg-blue-800 text-white hover:bg-blue-900">P</button>
-            </div>
+            </div> */}
             <p className="text-sm text-gray-600 mt-4">
-                ¿No puedes iniciar sesión? <a href="#" className="text-blue-500 hover:underline">Crear cuenta</a>
+                ¿No puedes iniciar sesión?{" "}
+                <span onClick={goToSignup} className="text-blue-500 hover:underline cursor-pointer">
+                    Crear cuenta
+                </span>
             </p>
         </div>
 
